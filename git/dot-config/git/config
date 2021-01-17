@@ -1,0 +1,85 @@
+[alias]
+	# Show the user email for the current repository.
+	whoami = config user.email
+	# List contributors with number of commits.
+	contributors = shortlog --summary --numbered
+	# View the current working tree status using the short format.
+	s = status -s
+	# View abbreviated SHA, description, and history graph of the latest 20 commits.
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	# Show the diff between the latest commit and the current state.
+	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+[apply]
+	# Detect whitespace errors when applying a patch.
+	whitespace = fix
+
+[core]
+	# Treat spaces before tabs and all kinds of trailing whitespace as an error.
+	# [default] trailing-space: looks for spaces at the end of a line
+	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	autocrlf = input
+	editor = nano
+
+[user]
+	email = louis.seubert.ls@gmail.com
+	name = Louis Seubert
+
+[color]
+	# Use colors in Git commands that are capable of colored output when
+	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+	ui = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold # line info
+	old = red # deletions
+	new = green # additions
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[diff]
+	# Detect copies as well as renames.
+	renames = copies
+
+[diff "bin"]
+	# Use `hexdump` to diff binary files.
+	textconv = hexdump -v -C
+
+[commit]
+	gpgsign = true
+	template = ~/.config/git/message
+
+[push]
+	# Make `git push` push relevant annotated tags when pushing branches out.
+	followTags = true
+	default = current
+
+
+[merge]
+	# Include summaries of merged commits in newly created merge commit messages
+	log = true
+	ff = only
+
+[rebase]
+	autosquash = true
+
+[gpg]
+	# https://help.github.com/articles/signing-commits-using-gpg/
+	program = gpg2
+
+# URL shorthands
+
+[url "git@github.com:"]
+	insteadOf = "gh:"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"

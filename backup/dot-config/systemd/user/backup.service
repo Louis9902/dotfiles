@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup of User's Storage Directories
+Documentation=man:borg(1)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/backup/make-backup.sh
