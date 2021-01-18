@@ -16,3 +16,5 @@ HISTCONTROL="erasedups:ignoredups:ignorespace"
 HISTIGNORE="&:ls:rm:[bf]g:exit:pwd:clear:mount:umount:cd:* --help:* -h:[ \t]*"
 
 export HISTSIZE HISTFILESIZE HISTCONTROL HISTIGNORE
+
+#export STACK_ROOT="$XDG_DATA_HOME"/stack

@@ -1,14 +1,23 @@
+# git configuration (~/.config/git/config)
+
 [alias]
 	# Show the user email for the current repository.
 	whoami = config user.email
+
 	# List contributors with number of commits.
 	contributors = shortlog --summary --numbered
+
 	# View the current working tree status using the short format.
 	s = status -s
+
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
 	# Show the diff between the latest commit and the current state.
 	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+	# View graph of commit history with more information. 
+	graph = log --graph --color --pretty=format:"%C(yellow)%H%C(green)%d%C(reset)%n%x20%cd%n%x20%cn%x20(%ce)%n%x20%s%n"
 
 [apply]
 	# Detect whitespace errors when applying a patch.
@@ -59,16 +68,18 @@
 	gpgsign = true
 	template = ~/.config/git/message
 
+[pull]
+	# How divergent branches
+	ff = true
+
 [push]
 	# Make `git push` push relevant annotated tags when pushing branches out.
 	followTags = true
 	default = current
 
-
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
-	ff = only
 
 [rebase]
 	autosquash = true
