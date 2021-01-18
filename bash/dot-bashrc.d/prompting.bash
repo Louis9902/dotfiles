@@ -14,10 +14,12 @@ __bash_prompt_git_addon() {
 	fi
 
 	local GIT_M_FILES GIT_D_FILES GIT_A_FILES GIT_R_FILES GIT_U_FILES
-	GIT_M_FILES="$(grep -c "^[12] \.*M" <<<"${STATUS}")"
-	GIT_D_FILES="$(grep -c "^[12] \.*D" <<<"${STATUS}")"
-	GIT_A_FILES="$(grep -c "^[12] \.*A" <<<"${STATUS}")"
-	GIT_R_FILES="$(grep -c "^[12] \.*R" <<<"${STATUS}")"
+	# see https://git-scm.com/docs/git-status for more information
+	# these are status information from the local git index
+	GIT_M_FILES="$(grep -c "^[12] M" <<<"${STATUS}")"
+	GIT_D_FILES="$(grep -c "^[12] D" <<<"${STATUS}")"
+	GIT_A_FILES="$(grep -c "^[12] A" <<<"${STATUS}")"
+	GIT_R_FILES="$(grep -c "^[12] R" <<<"${STATUS}")"
 	GIT_U_FILES="$(grep -c "^?" <<<"${STATUS}")"
 
 	local GIT_BRANCH GIT_COMMIT
@@ -172,5 +174,5 @@ __bash_prompt_set() {
 	unset -f font font-fg font-bg
 }
 
-# Tell bash to execute this function just before displaying its prompt.
+# tell bash to execute this function just before displaying its prompt.
 PROMPT_COMMAND=__bash_prompt_set
