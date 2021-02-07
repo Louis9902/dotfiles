@@ -12,8 +12,8 @@ Host *
 	# instead of always opening a new one. This leads to much
 	# quicker connection times.
 	ControlMaster auto
-	ControlPath ~/.ssh/control/%r@%h:%p
-	ControlPersist 1800
+	ControlPath /tmp/ssh_mux_%r@%h:%p
+	ControlPersist 1h
 
 	# Miscellaneous
 	Compression yes
