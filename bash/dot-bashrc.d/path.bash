@@ -1,28 +1,28 @@
 #!/bin/bash
 
-path-has() {
+path-contains() {
 	echo "$PATH" | grep -E -q "(^|:)$1($|:)"
 }
 
-path-add() {
-	if [[ ! -e "$1" ]] || path-has "$1"; then
+path-with-suffix() {
+	if [[ ! -e "$1" ]] || path-contains "$1"; then
 		return
 	fi
-
-	if [[ "$2" = 'suffix' ]]; then
-		PATH="$PATH:$1"
-	elif [[ "$2" = 'prefix' ]]; then
-		PATH="$1:$PATH"
-	else
-		exit 1
-	fi
-
+	PATH="$PATH:$1"
 }
 
-path-add "${HOME}/.local/bin" suffix
-path-add "${GOPATH:-$HOME/go}/bin" suffix
+path-with-prefix() {
+	if [[ ! -e "$1" ]] || path-contains "$1"; then
+		return
+	fi
+	PATH="$1:$PATH"
+}
 
+path-with-suffix "${HOME}/.local/bin"
+path-with-suffix "${GOPATH:-$HOME/go}/bin"
+
+# export path so it is visible for sub-shells
 export PATH
 
 # cleanup
-unset -f path-has path-add
+unset -f path-contains path-with-suffix path-with-prefix

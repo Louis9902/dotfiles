@@ -1,4 +1,5 @@
 #!/bin/bash
+# Configuration file for bash (~/.bashrc)
 
 case $- in
 *i*)

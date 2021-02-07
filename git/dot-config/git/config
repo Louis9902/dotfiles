@@ -1,4 +1,8 @@
-# git configuration (~/.config/git/config)
+# Configuration file for git (~/.config/git/config)
+
+# Use separate file for username / github token / etc
+[include]
+  path = ~/.config/git/config.local
 
 [alias]
 	# Show the user email for the current repository.
@@ -40,17 +44,27 @@
 	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
 	ui = auto
 
+# A lot more color
+[color]
+	ui = auto
+[color "diff"]
+	meta = yellow bold
+	commit = green bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+    newMoved = cyan
+    oldMoved = blue
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = "red bold 52"
+	newNormal = "green bold"
+	newHighlight = "green bold 22"
 [color "branch"]
 	current = yellow reverse
 	local = yellow
 	remote = green
-
-[color "diff"]
-	meta = yellow bold
-	frag = magenta bold # line info
-	old = red # deletions
-	new = green # additions
-
 [color "status"]
 	added = yellow
 	changed = green
@@ -88,9 +102,19 @@
 	# https://help.github.com/articles/signing-commits-using-gpg/
 	program = gpg2
 
-# URL shorthands
-
+# Do some rewrites of repo paths
 [url "git@github.com:"]
-	insteadOf = "gh:"
+	insteadOf = "https://github.com/"
 	pushInsteadOf = "github:"
 	pushInsteadOf = "git://github.com/"
+	pushInsteadOf = "https://github.com/"
+
+[url "git://github.com/"]
+	insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+	pushInsteadOf = "gist:"
+	pushInsteadOf = "git://gist.github.com/"
+	
+[url "git://gist.github.com/"]
+	insteadOf = "gist:"
