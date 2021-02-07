@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# create a short git.io url with a custom code
+# Create a short git.io url with a custom code
 git-io() {
 	if [ -z "${1}" ] || [ -z "${2}" ]; then
 		echo "Usage: git-io slug url"
@@ -9,7 +9,7 @@ git-io() {
 	curl -i https://git.io -F "url=${2}" -F "code=${1}"
 }
 
-# extract common archive files
+# Extract common archive files
 extract() {
 	echo "Extracting $1 ..."
 	if [ -f "$1" ]; then
@@ -33,7 +33,7 @@ extract() {
 	fi
 }
 
-# colorize man pages with less
+# Colorize man pages with less
 man() {
 	env \
 		LESS_TERMCAP_mb="$(printf "\e[1;31m")" \

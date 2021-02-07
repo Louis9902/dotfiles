@@ -1,32 +1,23 @@
 #!/bin/bash
 # Configuration file for bash (~/.bashrc)
 
-case $- in
-*i*)
-	# running in interactive shell
-	;;
-*)
-	# running in non interactive shell
-	return # do not import in non interactive shell
-	;;
-esac
-
-# shellcheck source=/dev/null
-import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
-
 main() {
 
-	# Load global config file
+	# shellcheck source=/dev/null
+	import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
+
 	if [ -f /etc/bashrc ]; then
 		import '/etc/bashrc'
 	fi
 
-	# Load bash files from config folder
 	local file
 	for file in "$HOME"/.bashrc.d/*.bash; do
 		import "${file}"
 	done
 }
 
-main
-unset -f main import
+if [[ $- == *i* ]]; then
+	(main "$@")
+fi
+
+unset -f main
