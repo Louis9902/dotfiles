@@ -17,7 +17,7 @@ main() {
 }
 
 if [[ $- == *i* ]]; then
-	(main "$@")
+	main "$@"
 fi
 
 unset -f main

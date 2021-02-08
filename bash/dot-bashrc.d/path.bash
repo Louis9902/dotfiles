@@ -25,4 +25,4 @@ main() {
 	export PATH
 }
 
-(main "$@")
+main "$@"
