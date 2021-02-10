@@ -86,7 +86,7 @@ __bash_prompt_git_addon() {
 		PROMPT+=" $(font-fg 003)?$(font)${GIT_U_FILES}" # YELLOW
 	fi
 
-	echo "${PROMPT}"
+	echo -n " ${PROMPT}"
 }
 
 __bash_prompt_virtualenv_addon() {
@@ -94,9 +94,8 @@ __bash_prompt_virtualenv_addon() {
 
 	if [ -n "${VIRTUAL_ENV}" ]; then
 		PROMPT="$(font-fg 027)[$(basename "${VIRTUAL_ENV}")]$(font)"
+		echo -n " ${PROMPT}"
 	fi
-
-	echo "${PROMPT}"
 }
 
 __bash_info() {
@@ -159,37 +158,26 @@ __bash_prompt_set() {
 		HOST="${STD_HOST_COLOR}${HOST}${RESET_COLOR}"
 	fi
 
-	local -a BASH_PROMPT_EXTRA BASH_PROMPT_ADDON=(
-		'__bash_prompt_virtualenv_addon'
-		'__bash_prompt_git_addon'
-	)
-
-	# collect prompt addons
-	local NAME VALUE
-	for NAME in "${BASH_PROMPT_ADDON[@]}"; do
-		VALUE="$($NAME)"
-		if [[ -n "${VALUE}" ]]; then
-			BASH_PROMPT_EXTRA+=(" ${VALUE}")
-		fi
-	done
-
 	# concat prompt addons
-	local EXTRA
-	if [[ "${#BASH_PROMPT_EXTRA[@]}" -gt 0 ]]; then
-		EXTRA+="${BASH_PROMPT_EXTRA[*]}"
-		EXTRA+=' '
+	local INFORMATION=''
+
+	INFORMATION+="$(__bash_prompt_virtualenv_addon)"
+	INFORMATION+="$(__bash_prompt_git_addon)"
+
+	if [[ -n "${INFORMATION}" ]]; then
+		INFORMATION="${INFORMATION} "
 	fi
 
 	PS1=''
-	PS1+="[${USER}@${HOST} ${CWD}]${EXTRA}${BANG} "
-
-	# Support for Virtual Terminal Emulator (GTK 3+ widget)
-	if [[ $(command -v __vte_osc7) ]]; then
-		PS1+="$(__vte_osc7)"
-	fi
+	PS1+="[${USER}@${HOST} ${CWD}]${INFORMATION}${BANG} "
 
 	# cleanup
 	unset -f font font-fg font-bg
+
+	# Support for Virtual Terminal Emulator (GTK 3+ widget)
+	if [[ $(command -v __vte_osc7) ]]; then
+		__vte_osc7
+	fi
 }
 
 # tell bash to execute this function just before displaying its prompt.
