@@ -36,15 +36,30 @@ extract() {
 # Colorize man pages with less
 man() {
 	env \
-		LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
-		LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+		LESS_TERMCAP_mb="$(printf "\e[01;31m")" \
+		LESS_TERMCAP_md="$(printf "\e[01;38;5;74m")" \
 		LESS_TERMCAP_me="$(printf "\e[0m")" \
 		LESS_TERMCAP_se="$(printf "\e[0m")" \
-		LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+		LESS_TERMCAP_so="$(printf "\e[38;5;246m")" \
 		LESS_TERMCAP_ue="$(printf "\e[0m")" \
-		LESS_TERMCAP_us="$(printf "\e[1;32m")" \
+		LESS_TERMCAP_us="$(printf "\e[04;38;5;146m")" \
 		man "$@"
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+o() {
+	if [ $# -eq 0 ]; then
+		xdg-open .	> /dev/null 2>&1
+	else
+		xdg-open "$@" > /dev/null 2>&1
+	fi
 }
 
 # make a backup of a file
 backup() { cp "$1"{,.bkp}; }
+
+mkcd() { mkdir -p "$1" && cd "$1" || return; }
+
+monitor-off() { xrandr --output HDMI-1 --off; }
+monitor-on() { xrandr --output HDMI-1 --auto --left-of HDMI-2; }

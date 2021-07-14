@@ -11,7 +11,10 @@ main() {
 	fi
 
 	local file
-	for file in "$HOME"/.bashrc.d/*.bash; do
+	for file in "$HOME"/.config/bash/.bashrc.d/*.bash; do
+		import "${file}"
+	done
+	for file in "$HOME"/.config/bash/.bashrc.d/*.sh; do
 		import "${file}"
 	done
 }

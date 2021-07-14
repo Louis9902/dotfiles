@@ -6,4 +6,4 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/.local/share/backup/make-backup.sh
+ExecStart=/usb/bin/python3 %h/.local/lib/backup/make-backup.py
