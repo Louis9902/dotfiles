@@ -12,6 +12,15 @@ __bash_prompt_git_addon() {
 	if [[ -z "${STATUS}" ]]; then
 		return
 	fi
+	
+	# branch
+	# git status --porcelain=2 --branch | grep '# branch.head' | cut -c 15-
+	# commit 
+	# git status --porcelain=2 --branch | grep '# branch.oid' | cut -c 14- | cut -c 1-8
+	# ahead
+	# git status --porcelain=2 --branch | grep '# branch.ab' | cut -c 13- | cut -d ' ' -f 1
+	# behind
+	# git status --porcelain=2 --branch | grep '# branch.ab' | cut -c 13- | cut -d ' ' -f 2
 
 	local GIT_M_FILES GIT_D_FILES GIT_A_FILES GIT_R_FILES GIT_U_FILES
 	# see https://git-scm.com/docs/git-status for more information
@@ -44,46 +53,46 @@ __bash_prompt_git_addon() {
 	# if git has changes show name in RED otherwise in GREEN
 	local GIT_BRANCH_CHANGE
 	if [[ "${GIT_M_FILES}" -eq '0' ]]; then
-		GIT_BRANCH_CHANGE="$(font-fg 002)" # GREEN
+		GIT_BRANCH_CHANGE="$(ansi setaf 002)" # GREEN
 	else
-		GIT_BRANCH_CHANGE="$(font-fg 001)" # RED
+		GIT_BRANCH_CHANGE="$(ansi setaf 001)" # RED
 	fi
 
 	local PROMPT
 
 	# add branch information to prompt
-	PROMPT="${GIT_BRANCH_CHANGE}${GIT_BRANCH}$(font)"
+	PROMPT="${GIT_BRANCH_CHANGE}${GIT_BRANCH}$(ansi sgr0)"
 
 	# add information if branch is behind of remote
 	if [[ -n "${GIT_COMMITS_BH}" ]] && [[ "${GIT_COMMITS_BH}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 001)>$(font)${GIT_COMMITS_BH}" # RED
+		PROMPT+=" $(ansi setaf 001)>$(ansi sgr0)${GIT_COMMITS_BH}" # RED
 	fi
 
 	# add information if branch is ahead of remote
 	if [[ -n "${GIT_COMMITS_AH}" ]] && [[ "${GIT_COMMITS_AH}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 002)<$(font)${GIT_COMMITS_AH}" # GREEN
+		PROMPT+=" $(ansi setaf 002)<$(ansi sgr0)${GIT_COMMITS_AH}" # GREEN
 	fi
 
 	# information about the status of the working tree
 
 	if [[ "${GIT_M_FILES}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 005)~$(font)${GIT_M_FILES}" # PRUPLE
+		PROMPT+=" $(ansi setaf 005)~$(ansi sgr0)${GIT_M_FILES}" # PRUPLE
 	fi
 
 	if [[ "${GIT_D_FILES}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 001)-$(font)${GIT_D_FILES}" # RED
+		PROMPT+=" $(ansi setaf 001)-$(ansi sgr0)${GIT_D_FILES}" # RED
 	fi
 
 	if [[ "${GIT_A_FILES}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 002)+$(font)${GIT_A_FILES}" # GREEN
+		PROMPT+=" $(ansi setaf 002)+$(ansi sgr0)${GIT_A_FILES}" # GREEN
 	fi
 
 	if [[ "${GIT_R_FILES}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 004)*$(font)${GIT_R_FILES}" # BLUE
+		PROMPT+=" $(ansi setaf 004)*$(ansi sgr0)${GIT_R_FILES}" # BLUE
 	fi
 
 	if [[ "${GIT_U_FILES}" -gt 0 ]]; then
-		PROMPT+=" $(font-fg 003)?$(font)${GIT_U_FILES}" # YELLOW
+		PROMPT+=" $(ansi setaf 003)?$(ansi sgr0)${GIT_U_FILES}" # YELLOW
 	fi
 
 	echo -n " ${PROMPT}"
@@ -93,71 +102,47 @@ __bash_prompt_virtualenv_addon() {
 	local PROMPT
 
 	if [ -n "${VIRTUAL_ENV}" ]; then
-		PROMPT="$(font-fg 027)[$(basename "${VIRTUAL_ENV}")]$(font)"
-		echo -n " ${PROMPT}"
+		PROMPT="$(ansi setaf 27)[$(basename "${VIRTUAL_ENV}")]$(ansi sgr0)"
+		printf " %s" ${PROMPT}
 	fi
 }
 
-__bash_info() {
-	for i in {1..256}; do
-		echo -e -n "\033[38;5;${i}m ⬛⬛ $(printf "%05d" "$i")"
-		if [[ 0 == $((i % 10)) ]]; then
-			echo
-		fi
-	done
-	echo
-}
+# color lookup table
+# for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
 
 __bash_prompt_set() {
+	ansi() { printf "\[%s\]" "$(tput $@)"; }
 
-	font() {
-		local esc='\033'
-		local format="\[${esc}[0m\]"
-		case $# in
-		2)
-			format="\[${esc}[${1};5;${2}m\]"
-			;;
-		esac
+	# set window title
+	# see https://gist.github.com/justinmk/a5102f9a0c1810437885a04a07ef0a91
+	local pwd='~'
+	[ "$PWD" != "$HOME" ] && pwd=${PWD/#$HOME\//\~\/}
+	pwd="${pwd//[[:cntrl:]]}"
+	printf "\033]2;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${pwd}"
 
-		echo "${format}"
-	}
-	font-fg() { font 38 "$1"; }
-	font-bg() { font 48 "$1"; }
 
-	local CWD='\W'
-	local USER='\u'
-	local HOST='\h'
-	local BANG='\$'
-
-	local RESET_COLOR
-	RESET_COLOR="$(font)"
-
-	# basename of the current working directory
-	local WORK_DIR_COLOR
-	WORK_DIR_COLOR="$(font-fg 046)"
-	CWD="${WORK_DIR_COLOR}${CWD}${RESET_COLOR}"
-
+	local USER_PART
 	# username of the current user
-	local ROOT_UID_COLOR USER_UID_COLOR
-	ROOT_UID_COLOR="$(font-fg 196)"
-	USER_UID_COLOR="$(font-fg 202)"
-
 	if [[ "${EUID}" == 0 ]]; then
-		USER="${ROOT_UID_COLOR}${USER}${RESET_COLOR}"
+		USER_PART="$(ansi setaf 160)\u$(tput sgr0)"
 	else
-		USER="${USER_UID_COLOR}${USER}${RESET_COLOR}"
+		USER_PART="$(ansi setaf 208)\u$(tput sgr0)"
 	fi
-
-	# hostname up to the first
-	local SSH_HOST_COLOR STD_HOST_COLOR
-	SSH_HOST_COLOR="$(font-fg 196)"
-	STD_HOST_COLOR="$(font-fg 011)"
+	
+	local HOST_PART
+	# hostname of the system
 	if [[ -n "${SSH_TTY}" ]]; then
-		HOST="${SSH_HOST_COLOR}${HOST}${RESET_COLOR}"
+		HOST_PART="$(ansi setaf 196)\h$(ansi sgr0)"
 	else
-		HOST="${STD_HOST_COLOR}${HOST}${RESET_COLOR}"
+		HOST_PART="$(ansi setaf 214)\h$(ansi sgr0)"
 	fi
-
+	
+	local PATH_PART
+	# basename of the current path
+	PATH_PART="$(ansi setaf 47)\W$(ansi sgr0)"
+	
+	local BANG_PART='\$'
+	
 	# concat prompt addons
 	local INFORMATION=''
 
@@ -167,18 +152,24 @@ __bash_prompt_set() {
 	if [[ -n "${INFORMATION}" ]]; then
 		INFORMATION="${INFORMATION} "
 	fi
-
-	PS1=''
-	PS1+="[${USER}@${HOST} ${CWD}]${INFORMATION}${BANG} "
+	
+	PS1="[${USER_PART}@${HOST_PART} ${PATH_PART}]${INFORMATION}${BANG_PART} "
 
 	# cleanup
-	unset -f font font-fg font-bg
-
-	# Support for Virtual Terminal Emulator (GTK 3+ widget)
-	if [[ $(command -v __vte_osc7) ]]; then
-		__vte_osc7
-	fi
+	unset -f ansi
 }
 
-# tell bash to execute this function just before displaying its prompt.
-PROMPT_COMMAND=__bash_prompt_set
+contains() {
+  local i match="$1"
+  shift
+  for i; do [[ "$i" == "$match" ]] && return 0; done
+  return 1
+}
+
+# append the custom prompt function to the array of pre prompt commands
+# NOTE: This is because VTE has also some hooks
+if ! contains "__bash_prompt_set" "${PROMPT_COMMAND[@]}"; then
+	PROMPT_COMMAND+=(__bash_prompt_set)
+fi
+
+unset -f contains

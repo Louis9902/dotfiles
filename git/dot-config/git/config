@@ -33,7 +33,7 @@
 	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
 	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 	autocrlf = input
-	editor = nano
+	editor = vim
 
 [user]
 	email = louis.seubert.ls@gmail.com
@@ -48,11 +48,6 @@
 [color]
 	ui = auto
 [color "diff"]
-	meta = yellow bold
-	commit = green bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
 	whitespace = red reverse
 	newMoved = cyan
 	oldMoved = blue
@@ -66,9 +61,11 @@
 	local = yellow
 	remote = green
 [color "status"]
-	added = yellow
-	changed = green
+	updated = green bold
+	changed = red bold strike
 	untracked = cyan
+	branch = yellow black bold ul
+	unmerged = magenta
 
 [diff]
 	# Detect copies as well as renames.
