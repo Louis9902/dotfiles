@@ -8,6 +8,9 @@
 if command -v vim >/dev/null; then
 	EDITOR="$(command -v vim)"
 	VISUAL="$(command -v vim)"
+elif command -v nvim >/dev/null; then
+	EDITOR="$(command -v nvim)"
+	VISUAL="$(command -v nvim)"
 elif command -v nano >/dev/null; then
 	EDITOR="$(command -v nano)"
 	VISUAL="$(command -v nano)"
@@ -63,10 +66,6 @@ GOBIN="${XDG_BIN_HOME:-$HOME/.local/bin}"
 GOMODCACHE="${XDG_STATE_HOME:-$HOME/.local/state}/go/pkg/mod"
 
 export GOBIN GOMODCACHE
-
-VIMINIT="source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
-
-export VIMINIT
 
 PYLINTHOME="${XDG_CACHE_HOME:-$HOME/.cache}/pylint"
 
