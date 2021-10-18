@@ -58,7 +58,9 @@ else
 	alias code='e'
 fi
 
-
+if command -v vim >/dev/null; then
+	alias vim=nvim
+fi
 
 
 # redirect go paths to xdg paths

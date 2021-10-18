@@ -50,7 +50,7 @@ man() {
 # location
 o() {
 	if [ $# -eq 0 ]; then
-		xdg-open .	> /dev/null 2>&1
+		xdg-open . > /dev/null 2>&1
 	else
 		xdg-open "$@" > /dev/null 2>&1
 	fi
@@ -60,7 +60,3 @@ o() {
 backup() { cp "$1"{,.bkp}; }
 
 mkcd() { mkdir -p "$1" && cd "$1" || return; }
-
-monitor-off() { xrandr --output HDMI-1 --off; }
-monitor-on() { xrandr --output HDMI-1 --auto --left-of HDMI-2; }
-

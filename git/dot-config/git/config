@@ -22,6 +22,12 @@
 
 	# View graph of commit history with more information. 
 	graph = log --graph --oneline --decorate
+
+	# View all branches
+	branches = branch --list
+
+	# Show the changes which will in the next commit
+	precommit = diff --cached --diff-algorithm=minimal -w
 [apply]
 	# Detect whitespace errors when applying a patch.
 	whitespace = fix
@@ -76,6 +82,9 @@
 [commit]
 	gpgsign = true
 	template = ~/.config/git/message
+
+[init]
+	defaultBranch = master
 
 [pull]
 	# How divergent branches
