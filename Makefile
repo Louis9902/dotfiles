@@ -24,7 +24,7 @@ gpg: ## initialize gpg
 	ln -vfs ${PWD}/gpg/dot-gnupg/gpg.conf       ${HOME}/.gnupg/gpg.conf
 	cp ${PWD}/gpg/dot-gnupg/sshcontrol          ${HOME}/.gnupg/sshcontrol
 	mkdir -p ${HOME}/.config/systemd/user
-	ln -vfs ${PWD}/gpg/dot-config/systemd/user/* ${HOME}/.config/systemd/user
+	ln -vfs ${PWD}/gpg/dot-config/systemd/user/* ${HOME}/.config/systemd/user/
 	$(SYSTEMD_RELOAD)
 	$(SYSTEMD_ENABLE) gpg-agent-ssh.socket
 
@@ -37,4 +37,4 @@ git: ## initialize git
 bash:
 	@ln -vfs ${PWD}/bash/dot-bashrc  ${HOME}/.bashrc
 	@mkdir -p ${HOME}/.config/bash/.bashrc.d
-	@ln -vfs ${PWD}/bash/dot-config/dot-bashrc.d/* ${HOME}/.config/bash/.bashrc.d
+	@ln -vfs ${PWD}/bash/dot-config/bash/dot-bashrc.d/*      ${HOME}/.config/bash/.bashrc.d/
