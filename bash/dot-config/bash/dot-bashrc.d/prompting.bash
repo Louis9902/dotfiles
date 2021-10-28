@@ -124,22 +124,22 @@ __bash_prompt_set() {
 	local USER_PART
 	# username of the current user
 	if [[ "${EUID}" == 0 ]]; then
-		USER_PART="$(ansi setaf 160)\u$(tput sgr0)"
+		USER_PART="$(tput setaf 160)\u$(tput sgr0)"
 	else
-		USER_PART="$(ansi setaf 208)\u$(tput sgr0)"
+		USER_PART="$(tput setaf 161)\u$(tput sgr0)"
 	fi
 	
 	local HOST_PART
 	# hostname of the system
 	if [[ -n "${SSH_TTY}" ]]; then
-		HOST_PART="$(ansi setaf 196)\h$(ansi sgr0)"
+		HOST_PART="$(tput setaf 158)$(tput smul)\h$(tput sgr0)"
 	else
-		HOST_PART="$(ansi setaf 214)\h$(ansi sgr0)"
+		HOST_PART="$(tput setaf 164)\h$(tput sgr0)"
 	fi
 	
 	local PATH_PART
 	# basename of the current path
-	PATH_PART="$(ansi setaf 47)\W$(ansi sgr0)"
+	PATH_PART="$(tput setaf 111)\W$(tput sgr0)"
 	
 	local BANG_PART='\$'
 	

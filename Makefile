@@ -35,6 +35,6 @@ git: ## initialize git
 
 .PHONY: bash
 bash:
-	@ln -vfs ${PWD}/bash/dot-bashrc  ${HOME}/.bashrc
+	@ln -vfs ${PWD}/bash/dot-bashrc ${HOME}/.bashrc
 	@mkdir -p ${HOME}/.config/bash/.bashrc.d
-	@ln -vfs ${PWD}/bash/dot-config/bash/dot-bashrc.d/*      ${HOME}/.config/bash/.bashrc.d/
+	@ln -vfs ${PWD}/bash/dot-config/bash/dot-bashrc.d/* ${HOME}/.config/bash/.bashrc.d/
