@@ -1,0 +1,26 @@
+#
+# Configuration file for ssh (~/.ssh/config)
+#
+
+Include config.d/*
+
+Host github.com
+	ControlMaster auto
+	ControlPersist 120
+
+Host *
+	# Always use SSH2.
+	Protocol 2
+
+	# Use a shared channel for all sessions to the same host,
+	# instead of always opening a new one. This leads to much
+	# quicker connection times.
+	ControlMaster auto
+	ControlPath ~/.cache/ssh_mux_%r@%h:%p
+	ControlPersist 1h
+
+	# Miscellaneous
+	Compression yes
+	TCPKeepAlive yes
+	ServerAliveInterval 20
+	ServerAliveCountMax 10

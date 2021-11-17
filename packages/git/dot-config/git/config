@@ -1,0 +1,124 @@
+# Configuration file for git (~/.config/git/config)
+
+# Use separate file for username / github token / etc
+[include]
+  path = ~/.config/git/config.d/**
+
+[alias]
+	# Show the user email for the current repository.
+	whoami = config user.email
+
+	# List contributors with number of commits.
+	contributors = shortlog --summary --numbered
+
+	# View the current working tree status using the short format.
+	s = status -s
+
+	# View abbreviated SHA, description, and history graph of the latest 20 commits.
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+	# Show the diff between the latest commit and the current state.
+	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+	# View graph of commit history with more information. 
+	graph = log --graph --oneline --decorate
+
+	# View all branches
+	branches = branch --list
+
+	# Show the changes which will in the next commit
+	precommit = diff --cached --diff-algorithm=minimal -w
+[apply]
+	# Detect whitespace errors when applying a patch.
+	whitespace = fix
+
+[core]
+	# Treat spaces before tabs and all kinds of trailing whitespace as an error.
+	# [default] trailing-space: looks for spaces at the end of a line
+	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	autocrlf = input
+
+[user]
+	email = louis.seubert.ls@gmail.com
+	name = Louis Seubert
+
+[color]
+	# Use colors in Git commands that are capable of colored output when
+	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+	ui = auto
+
+# A lot more color
+[color]
+	ui = auto
+[color "diff"]
+	whitespace = red reverse
+	newMoved = cyan
+	oldMoved = blue
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = "red bold 52"
+	newNormal = "green bold"
+	newHighlight = "green bold 22"
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "status"]
+	updated = green bold
+	changed = red bold strike
+	untracked = cyan
+	branch = yellow black bold ul
+	unmerged = magenta
+
+[diff]
+	# Detect copies as well as renames.
+	renames = copies
+
+[diff "bin"]
+	# Use `hexdump` to diff binary files.
+	textconv = hexdump -v -C
+
+[commit]
+	gpgsign = true
+	template = ~/.config/git/message
+
+[init]
+	defaultBranch = master
+
+[pull]
+	# How divergent branches
+	ff = true
+
+[push]
+	# Make `git push` push relevant annotated tags when pushing branches out.
+	followTags = true
+	default = current
+
+[merge]
+	# Include summaries of merged commits in newly created merge commit messages
+	log = true
+
+[rebase]
+	autosquash = true
+
+[gpg]
+	# https://help.github.com/articles/signing-commits-using-gpg/
+	program = gpg2
+
+# Do some rewrites of repo paths
+[url "git@github.com:"]
+	insteadOf = "https://github.com/"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+	pushInsteadOf = "https://github.com/"
+
+[url "git://github.com/"]
+	insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+	pushInsteadOf = "gist:"
+	pushInsteadOf = "git://gist.github.com/"
+	
+[url "git://gist.github.com/"]
+	insteadOf = "gist:"

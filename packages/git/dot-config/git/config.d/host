@@ -1,0 +1,3 @@
+[user]
+	email = ${GIT_MAIL}
+	name = ${GIT_USER}

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Configuration file for bash (~/.bashrc)
+
+initialize() {
+
+	# shellcheck source=/dev/null
+	import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
+
+	[[ -f /etc/bashrc ]] && import '/etc/bashrc'
+
+	local file
+	for file in "$HOME"/.config/bash/config.d/*.sh; do
+		import "${file}"
+	done
+}
+
+if [[ $- == *i* ]]; then
+	initialize "$@"
+fi
+
+unset -f initialize
