@@ -29,12 +29,14 @@ monitors()
 }
 
 update-codium() {
-	local just_rpm='map(select(.content_type=="application/x-rpm"))'
-	local just_amd='map(select(.name | endswith(".el7.x86_64.rpm")))'
-	local json="$(curl -S -s -H "Accept: application/vnd.github.v3+json" \
-				'https://api.github.com/repos/vscodium/vscodium/releases?per_page=1')"
-	echo "Updating to version: $(jq '.[0].tag_name' <<<"${json}")"
-	local url="$(jq -r ".[0] | (.assets | $just_rpm | $just_amd | .[0].browser_download_url)" <<<"${json}")"
-	sudo dnf install "${url}"
+	gh_get_latest_release_url 'vscodium/vscodium' |
+	while read -r version && read -r url; do
+		if ! rpm -qa | grep "codium-${version}" >/dev/null; then
+			printf 'There is a new version (%s) of vscodium avaiable\n' "${version}"
+			sudo dnf install "${url}"
+		else
+			printf 'There is no new version of vscodium avaiable\n'
+		fi
+	done
 }
 

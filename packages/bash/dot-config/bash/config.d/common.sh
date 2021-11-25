@@ -55,7 +55,7 @@ alias wget='wget -c --no-hsts'
 # ---------------------------------------------
 
 if command -v codium >/dev/null; then
-	alias code='$(command -v codium)'
+	code() { { test $# -gt 0 && $(command -v codium) "$@"; } || $(command -v codium) .; }
 else
 	alias code='e'
 fi
