@@ -1,4 +1,20 @@
 #!/bin/bash
 # Configuration file for bash (~/.bash_profile)
 
-# This file is sued for interactive sessions
+# This file will be read for interactive login shells unless the '--noprofile'
+# flag is used to launch the shell.
+
+main() {
+	# shellcheck source=/dev/null
+	import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
+
+	[[ -f /etc/bashrc ]] && import '/etc/bashrc'
+
+	local file
+	for file in "$HOME"/.config/bash/config.d/*.sh; do
+		import "${file}"
+	done
+}
+
+[[ $- == *i* ]] && main "$@"
+unset -f main

@@ -18,5 +18,6 @@ install -d "${TARGET}/config.d/"
 # Link required files
 # --------------------------------------
 install -m 644 "${SOURCE}/dot-bash_profile"           "${HOME}/.bash_profile"
+install -m 644 "${SOURCE}/dot-bash_logout"            "${HOME}/.bash_logout"
 install -m 644 "${SOURCE}/dot-bashrc"                 "${HOME}/.bashrc"
 install -m 644 "${SOURCE}/dot-config/bash/config.d"/* "${TARGET}/config.d"

@@ -1,21 +1,14 @@
 #!/bin/bash
 # Configuration file for bash (~/.bashrc)
 
-initialize() {
+# This file will be read for interactive shells unless the '--norc'
+# flag is used to launch the shell.
+# This is only done when it's not an login shell.
 
-	# shellcheck source=/dev/null
-	import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
-
-	[[ -f /etc/bashrc ]] && import '/etc/bashrc'
-
-	local file
-	for file in "$HOME"/.config/bash/config.d/*.sh; do
-		import "${file}"
-	done
+main() {
+	echo >/dev/null
 }
 
-if [[ $- == *i* ]]; then
-	initialize "$@"
-fi
 
-unset -f initialize
+[[ $- == *i* ]] && main "$@"
+unset -f main
