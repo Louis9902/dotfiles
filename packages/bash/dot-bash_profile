@@ -1,20 +1,11 @@
 #!/bin/bash
-# Configuration file for bash (~/.bash_profile)
+# shellcheck source=/dev/null
 
-# This file will be read for interactive login shells unless the '--noprofile'
-# flag is used to launch the shell.
+# This file is read once by bash for each login shell. But because we want the
+# same set of configs for login shells, we are goint to source the ~/.bashrc file.
 
-main() {
-	# shellcheck source=/dev/null
-	import() { [ -r "$1" ] && [ -f "$1" ] && source "$1"; }
-
-	[[ -f /etc/bashrc ]] && import '/etc/bashrc'
-
-	local file
-	for file in "$HOME"/.config/bash/config.d/*.sh; do
-		import "${file}"
-	done
-}
-
-[[ $- == *i* ]] && main "$@"
-unset -f main
+for file in '/etc/bashrc' "${HOME}/bashrc"; do
+	# only source if file and readable
+	test -f "${file}" -a -r "${file}" && source "${file}"
+done
+unset file
