@@ -33,7 +33,7 @@ update-codium() {
 	while read -r version && read -r url; do
 		if ! rpm -qa | grep "codium-${version}" >/dev/null; then
 			printf 'There is a new version (%s) of vscodium avaiable\n' "${version}"
-			sudo dnf install "${url}"
+			sudo dnf install -y "${url}"
 		else
 			printf 'There is no new version of vscodium avaiable\n'
 		fi

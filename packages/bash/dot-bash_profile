@@ -4,7 +4,7 @@
 # This file is read once by bash for each login shell. But because we want the
 # same set of configs for login shells, we are goint to source the ~/.bashrc file.
 
-for file in '/etc/bashrc' "${HOME}/bashrc"; do
+for file in '/etc/bashrc' "${HOME}/.bashrc"; do
 	# only source if file and readable
 	test -f "${file}" -a -r "${file}" && source "${file}"
 done

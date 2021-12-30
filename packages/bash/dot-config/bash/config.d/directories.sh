@@ -19,10 +19,11 @@ alias rd='rmdir'
 # ---------------------------------------------
 # more shortcuts for listing files
 # ---------------------------------------------
-alias la='ls -Alh'	# show hidden files
-alias ll='ls -lh'	# sort by size human readable
-alias lr='ls -lR'	# recursive ls
-alias lt='ls -ltr'	# sort by date
+alias ls='ls --color=auto'
+alias la='ls --color=auto -Alh'	# show hidden files
+alias ll='ls --color=auto -lh'	# sort by size human readable
+alias lr='ls --color=auto -lR'	# recursive ls
+alias lt='ls --color=auto -ltr'	# sort by date
 
 # ---------------------------------------------
 # shortcuts for showing human-readable fs info
