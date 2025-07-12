@@ -71,7 +71,10 @@ alias zgrep='zgrep --color=auto'
 # ---------------------------------------------
 
 if command -v codium >/dev/null; then
-	code() { { test $# -gt 0 && $(command -v codium) "$@"; } || $(command -v codium) .; }
+	code() { { test $# -gt 0 && command codium "$@"; } || command codium .; }
 else
 	alias code='e'
 fi
+
+LESSHISTFILE=/dev/null
+export LESSHISTFILE

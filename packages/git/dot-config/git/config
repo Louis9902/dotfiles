@@ -11,6 +11,8 @@
 	# List contributors with number of commits.
 	contributors = shortlog --summary --numbered
 
+	cp = cherry-pick
+
 	# View the current working tree status using the short format.
 	s = status -s
 
